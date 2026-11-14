@@ -4,22 +4,17 @@
 
 ## GitHub에 올려 실행하기
 
-1. 이 ZIP을 압축 해제하고 새 GitHub 저장소의 **최상위**에 파일을 올립니다. `index.html`, `package.json`, `src`, `.github`가 같은 위치에 있어야 합니다. ZIP 자체를 저장소에 올리는 방식은 사용하지 마세요. 숨김 폴더 `.github`도 포함하세요.
-2. GitHub 저장소 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 선택합니다.
-3. `main`에 커밋하면 자동 배포됩니다. 이미 올렸다면 **Actions → Deploy GitHub Pages → Run workflow**를 누릅니다.
-4. 배포가 끝나면 실행 결과 또는 Settings → Pages에 표시되는 `https://계정.github.io/저장소이름/` 주소로 접속합니다.
+저장소 최상위의 `index.html`은 빌드가 끝난 실제 배포 파일입니다. `assets/`와 `samples/`를 함께 올려야 합니다. 원본 개발 HTML은 `app.html`에 별도로 보관합니다.
 
-이후 `main`에 올릴 때마다 앱이 갱신됩니다. 별도의 Secret 등록은 필요 없습니다. GitHub 무료 계정에서는 공개 저장소의 Pages를 사용할 수 있으며, 비공개 저장소의 Pages는 해당 GitHub 요금제 지원 여부를 확인하세요. 사이트와 소스 공개 여부는 학생 자료 저장 위치와 별개입니다. **학생 자료·CSV·백업은 저장소에 올리지 마세요.**
+1. 압축을 풀고 파일을 저장소 최상위에 올립니다. `index.html`, `assets/`, `samples/`가 같은 위치에 있어야 합니다.
+2. 저장소 **Settings → Pages → Source: Deploy from a branch**에서 **main / (root)**를 선택합니다.
+3. Pages 배포가 끝나면 `https://계정.github.io/저장소이름/` 주소로 접속합니다. 처음에는 ‘새 교사 저장소’를 만듭니다.
 
-Git을 사용한다면:
+이 방식은 Node 설치·Secret·별도 서버·Google 설정 없이 배포됩니다. GitHub 무료 계정의 Pages는 공개 저장소에서 사용할 수 있습니다. 학생 자료·CSV·암호화 백업은 GitHub에 올리지 마세요.
 
-```sh
-git init -b main
-git add .
-git commit -m "Add browser-based school record app"
-git remote add origin https://github.com/YOUR_ACCOUNT/YOUR_REPOSITORY.git
-git push -u origin main
-```
+소스를 수정하는 개발자는 `app.html`과 `src/`를 수정하고 **`npm run release`를 실행한 뒤 갱신된 `index.html`, `assets/`, `samples/`도 함께 커밋**합니다. 직접 배포한 `index.html`을 개발 원본으로 덮어쓰지 마세요.
+
+선택적으로 `.github/workflows/pages.yml`을 사용하는 경우 Source를 **GitHub Actions**로 선택하면 Actions에서 테스트·빌드한 `dist/`를 배포할 수도 있습니다. 현재 게시 방식이 브랜치 배포라면 변경할 필요가 없습니다.
 
 ## 사용 순서
 
@@ -63,7 +58,7 @@ npm run dev
 
 시스템 Chromium을 쓴다면 `CHROMIUM_PATH=/usr/bin/chromium npm run test:ui`로 실행할 수 있습니다. `npm run test:ui`는 빌드된 `dist/`를 GitHub Pages 프로젝트 하위 경로에 해당하는 테스트 출처로 제공해 실제 브라우저의 암호화·IndexedDB·XLSX 읽기·사용자 흐름을 검사합니다. 사업 로직이나 저장소를 모의 API로 대체하지 않습니다.
 
-`base: './'` 설정으로 사용자 사이트, 저장소 하위 경로, 사용자 지정 도메인에서 상대경로 자산을 사용합니다. `file://`로 HTML만 여는 실행은 지원하지 않습니다. HTTPS로 호스팅하세요. GitHub Pages가 HTTPS 주소를 제공합니다.
+개발 화면은 개발 서버의 `/app.html`에서 엽니다. `base: './'` 설정으로 사용자 사이트, 저장소 하위 경로, 사용자 지정 도메인에서 상대경로 자산을 사용합니다. `file://`로 HTML만 여는 실행은 지원하지 않습니다. HTTPS로 호스팅하세요. GitHub Pages가 HTTPS 주소를 제공합니다.
 
 ## 구성과 한도
 

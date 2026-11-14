@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/finalize-build.js",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test tests/*.test.js",
-    "test:ui": "node tests/browser.js"
+    "test:ui": "node tests/browser.js",
+    "release": "vite build && node scripts/finalize-build.js --release"
   },
   "dependencies": {
     "fflate": "0.8.3",
